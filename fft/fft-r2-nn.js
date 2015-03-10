@@ -54,14 +54,34 @@ function fft (xr, xi)
     var bReal = new Float32Array(n);
     var bImag = new Float32Array(n);
 
-    aReal.set(xr);
-    aImag.set(xi);
+    // This depends on n being a power of 2 and Math.log2 returning an
+    // exact integer!
+    var logn = Math.floor(Math.log2(n));
+
+    // Arrange it so that the last iteration puts the desired output
+    // in bReal/bImag.
+    if (logn & 1 == 1) {
+        fftRadix2Core(xr, xi, bReal, bImag);
+        notSwitchInput = !notSwitchInput;
+    } else {
+        fftRadix2Core(xr, xi, aReal, aImag);
+    }
+
+    pairsInGroup >>= 1;
+    numberOfGroups <<= 1;
+    distance >>= 1;
 
     while (numberOfGroups < n) {
         if (debug > 0) {
             console.log("numberOfGroups = " + numberOfGroups);
         }
-        fftRadix2Core(aReal, aImag, bReal, bImag);
+
+        if (notSwitchInput) {
+            fftRadix2Core(aReal, aImag, bReal, bImag);
+        } else {
+            fftRadix2Core(bReal, bImag, aReal, aImag);
+        }
+
         if (debug > 0) {
             console.log("bReal = ");
             console.log(bReal);
@@ -69,20 +89,11 @@ function fft (xr, xi)
             console.log(bImag);
         }
 
-        // Swap a and b arrays
-        {
-            var tmp = aReal;
-            aReal = bReal;
-            bReal = tmp;
-            tmp = aImag;
-            aImag = bImag;
-            bImag = tmp;
-        }
         notSwitchInput = !notSwitchInput;
         pairsInGroup >>= 1;
         numberOfGroups <<= 1;
         distance >>= 1;
     }
 
-    return [aReal, aImag];
+    return [bReal, bImag];
 }
