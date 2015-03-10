@@ -16,8 +16,8 @@ function FFTRadix2Core (aReal, aImag, bReal, bImag)
         var jlast = jfirst + pairsInGroup - 1;
         var jtwiddle = k * pairsInGroup;
         var omega = -2 * Math.PI * jtwiddle / n;
-        var wr = Math.cos(omega);
-        var wi = Math.sin(omega);
+        var wr = Math.fround(Math.cos(omega));
+        var wi = Math.fround(Math.sin(omega));
 
         for (var j = jfirst; j <= jlast; ++j) {
             // temp = w * a[j + distance]
@@ -121,8 +121,8 @@ function iFFTRadix2Core (aReal, aImag, bReal, bImag)
         var jlast = jfirst + pairsInGroup - 1;
         var jtwiddle = k * pairsInGroup;
         var omega = 2 * Math.PI * jtwiddle / n;
-        var wr = Math.cos(omega);
-        var wi = Math.sin(omega);
+        var wr = Math.fround(Math.cos(omega));
+        var wi = Math.fround(Math.sin(omega));
 
         for (var j = jfirst; j <= jlast; ++j) {
             // temp = w * a[j + distance]
