@@ -4,8 +4,9 @@ var pairsInGroup;
 var numberOfGroups;
 var distance;
 var notSwitchInput;
+var debug = 0;
 
-function fftRadix2InPlaceCore (aReal, aImag, bReal, bImag)
+function fftRadix2Core (aReal, aImag, bReal, bImag)
 {
     var index = 0;
     for (var k = 0; k < numberOfGroups; ++k) {
@@ -21,6 +22,15 @@ function fftRadix2InPlaceCore (aReal, aImag, bReal, bImag)
             var idx = j + distance;
             var tr = wr * aReal[idx] - wi * aImag[idx];
             var ti = wr * aImag[idx] + wi * aReal[idx];
+
+            if (debug > 0) {
+                console.log("k = " + k
+                            + ", jfirst/jlast = " + jfirst + " " + jlast
+                            + ", jtwiddle = " + jtwiddle
+                            + ", dist = " + distance
+                            + ", index = " + index
+                            + ", w = " + wr + ", " + wi);
+            }
             bReal[index] = aReal[j] + tr;
             bImag[index] = aImag[j] + ti;
             bReal[index + halfN] = aReal[j] - tr;
@@ -30,7 +40,7 @@ function fftRadix2InPlaceCore (aReal, aImag, bReal, bImag)
     }
 }
 
-function fftRadix2InPlace (xr, xi)
+function fft (xr, xi)
 {
     n = xr.length;
     halfN = n >> 1;
@@ -39,16 +49,27 @@ function fftRadix2InPlace (xr, xi)
     distance = halfN;
     notSwitchInput = true;
 
-    var aReal = new Float64Array(n);
-    var aImag = new Float64Array(n);
-    var bReal = new Float64Array(n);
-    var bImag = new Float64Array(n);
+    var aReal = new Float32Array(n);
+    var aImag = new Float32Array(n);
+    var bReal = new Float32Array(n);
+    var bImag = new Float32Array(n);
 
     aReal.set(xr);
     aImag.set(xi);
 
     while (numberOfGroups < n) {
-        fftRadix2InPlaceCore(aReal, aImag, bReal, bImag);
+        if (debug > 0) {
+            console.log("numberOfGroups = " + numberOfGroups);
+        }
+        fftRadix2Core(aReal, aImag, bReal, bImag);
+        if (debug > 0) {
+            console.log("bReal = ");
+            console.log(bReal);
+            console.log("bImag = ");
+            console.log(bImag);
+        }
+
+        // Swap a and b arrays
         {
             var tmp = aReal;
             aReal = bReal;
@@ -63,16 +84,5 @@ function fftRadix2InPlace (xr, xi)
         distance >>= 1;
     }
 
-    if (notSwitchInput) {
-        return [aReal, aImag];
-    } else {
-        return [bReal, bImag];
-    }
-}
-            
-var xr = new Float64Array(4);
-var xi = new Float64Array(4);
-
-for (var k = 0; k < 4; ++k) {
-    xr[k] = k;
+    return [aReal, aImag];
 }
