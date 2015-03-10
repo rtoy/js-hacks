@@ -40,7 +40,7 @@ function fftRadix2Core (aReal, aImag, bReal, bImag)
     }
 }
 
-function fft (xr, xi)
+function fft (xr, xi, bReal, bImag)
 {
     n = xr.length;
     halfN = n >> 1;
@@ -51,8 +51,6 @@ function fft (xr, xi)
 
     var aReal = new Float32Array(n);
     var aImag = new Float32Array(n);
-    var bReal = new Float32Array(n);
-    var bImag = new Float32Array(n);
 
     // This depends on n being a power of 2 and Math.log2 returning an
     // exact integer!
