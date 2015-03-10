@@ -4,6 +4,8 @@ var pairsInGroup;
 var numberOfGroups;
 var distance;
 var notSwitchInput;
+var twiddleCos;
+var twiddleSin;
 var debug = 0;
 
 // Core routine that does one stage of the FFT, implementing all of
@@ -15,9 +17,8 @@ function FFTRadix2Core (aReal, aImag, bReal, bImag)
         var jfirst = 2 * k * pairsInGroup;
         var jlast = jfirst + pairsInGroup - 1;
         var jtwiddle = k * pairsInGroup;
-        var omega = -2 * Math.PI * jtwiddle / n;
-        var wr = Math.fround(Math.cos(omega));
-        var wi = Math.fround(Math.sin(omega));
+        var wr = twiddleCos[jtwiddle];
+        var wi = twiddleSin[jtwiddle];
 
         for (var j = jfirst; j <= jlast; ++j) {
             // temp = w * a[j + distance]
@@ -110,6 +111,19 @@ function fft (xr, xi, bReal, bImag)
     return [bReal, bImag];
 }
 
+function fftInitialize (order)
+{
+    n = 1 << order;
+    twiddleCos = new Float32Array(n);
+    twiddleSin = new Float32Array(n);
+
+    var omega = -2 * Math.PI / n;
+    for (var k = 0; k < n; ++k) {
+        twiddleCos[k] = Math.fround(Math.cos(omega * k));
+        twiddleSin[k] = Math.fround(Math.sin(omega * k));
+    }
+}
+
 // Core routine that does one stage of the FFT, implementing all of
 // the butterflies for that stage.  This is identical to
 // FFTRadix2Core, except the twiddle factor, w, is the conjugate.
@@ -120,9 +134,8 @@ function iFFTRadix2Core (aReal, aImag, bReal, bImag)
         var jfirst = 2 * k * pairsInGroup;
         var jlast = jfirst + pairsInGroup - 1;
         var jtwiddle = k * pairsInGroup;
-        var omega = 2 * Math.PI * jtwiddle / n;
-        var wr = Math.fround(Math.cos(omega));
-        var wi = Math.fround(Math.sin(omega));
+        var wr = twiddleCos[jtwiddle];
+        var wi = -twiddleSin[jtwiddle];
 
         for (var j = jfirst; j <= jlast; ++j) {
             // temp = w * a[j + distance]
