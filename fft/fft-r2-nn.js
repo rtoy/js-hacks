@@ -6,6 +6,8 @@ var distance;
 var notSwitchInput;
 var debug = 0;
 
+// Core routine that does one stage of the FFT, implementing all of
+// the butterflies for that stage.
 function FFTRadix2Core (aReal, aImag, bReal, bImag)
 {
     var index = 0;
@@ -40,6 +42,18 @@ function FFTRadix2Core (aReal, aImag, bReal, bImag)
     }
 }
 
+// Forward out-of-place complex FFT.
+//
+// Computes the forward FFT, b,  of a complex vector x:
+//
+//   b[k] = sum(x[n] * W^(k*n), n, 0, N - 1), k = 0, 1,..., N-1
+//
+// where
+//   N = length of x, which must be a power of 2 and
+//   W = exp(-2*i*pi/N)
+//
+//   x = |xr| + i*|xi|
+//   b = |bReal| + i*|bImag|
 function fft (xr, xi, bReal, bImag)
 {
     n = xr.length;
@@ -96,6 +110,9 @@ function fft (xr, xi, bReal, bImag)
     return [bReal, bImag];
 }
 
+// Core routine that does one stage of the FFT, implementing all of
+// the butterflies for that stage.  This is identical to
+// FFTRadix2Core, except the twiddle factor, w, is the conjugate.
 function iFFTRadix2Core (aReal, aImag, bReal, bImag)
 {
     var index = 0;
@@ -130,6 +147,21 @@ function iFFTRadix2Core (aReal, aImag, bReal, bImag)
     }
 }
 
+// Inverse out-of-place complex FFT.
+//
+// Computes the inverse FFT, b,  of a complex vector x:
+//
+//   b[k] = sum(x[n] * W^(-k*n), n, 0, N - 1), k = 0, 1,..., N-1
+//
+// where
+//   N = length of x, which must be a power of 2 and
+//   W = exp(-2*i*pi/N)
+//
+//   x = |xr| + i*|xi|
+//   b = |bReal| + i*|bImag|
+//
+// Note that ifft(fft(x)) = N * x.  To get x, call ifftScale to scale
+// the output of the ifft appropriately.
 function ifft (xr, xi, bReal, bImag)
 {
     n = xr.length;
@@ -186,6 +218,8 @@ function ifft (xr, xi, bReal, bImag)
     return [bReal, bImag];
 }
 
+//
+// Scales the IFFT by 1/N, done in place.
 function ifftScale(xr, xi)
 {
     var n = xr.length;
@@ -195,4 +229,3 @@ function ifftScale(xr, xi)
         xi[k] *= factor;
     }
 }
-   
