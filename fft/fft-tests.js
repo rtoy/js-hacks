@@ -1,5 +1,5 @@
 describe(
-    "Test FFTs lengths with complex Ramp",
+    "Test Complex FFTs lengths with complex Ramp",
     function () {
         it("CFFT length 4",
            function () {
@@ -153,6 +153,179 @@ describe(
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(146.94);
+           });
+
+    });
+
+describe(
+    "Test Inverse Complex FFTs lengths with complex Ramp",
+    function () {
+        it("Inverse CFFT length 4",
+           function () {
+               var test = generateComplexTestSignal(4, "rampComplex");
+               var outr = new Float32Array(4);
+               var outi = new Float32Array(4);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(500);
+           });
+
+        it("Inverse CFFT length 8",
+           function () {
+               var test = generateComplexTestSignal(8, "rampComplex");
+               var outr = new Float32Array(8);
+               var outi = new Float32Array(8);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(159.93);
+           });
+
+        it("Inverse CFFT length 16",
+           function () {
+               var test = generateComplexTestSignal(16, "rampComplex");
+               var outr = new Float32Array(16);
+               var outi = new Float32Array(16);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(153.12);
+           });
+
+        it("Inverse CFFT length 32",
+           function () {
+               var test = generateComplexTestSignal(32, "rampComplex");
+               var outr = new Float32Array(32);
+               var outi = new Float32Array(32);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(149.45);
+           });
+
+        it("Inverse CFFT length 64",
+           function () {
+               var test = generateComplexTestSignal(64, "rampComplex");
+               var outr = new Float32Array(64);
+               var outi = new Float32Array(64);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(148.53);
+           });
+
+        it("Inverse CFFT length 128",
+           function () {
+               var test = generateComplexTestSignal(128, "rampComplex");
+               var outr = new Float32Array(128);
+               var outi = new Float32Array(128);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(149.84);
+           });
+
+        it("Inverse CFFT length 256",
+           function () {
+               var test = generateComplexTestSignal(256, "rampComplex");
+               var outr = new Float32Array(256);
+               var outi = new Float32Array(256);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(149.11);
+           });
+
+        it("Inverse CFFT length 512",
+           function () {
+               var test = generateComplexTestSignal(512, "rampComplex");
+               var outr = new Float32Array(512);
+               var outi = new Float32Array(512);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.62);
+           });
+
+        it("Inverse CFFT length 1024",
+           function () {
+               var test = generateComplexTestSignal(1024, "rampComplex");
+               var outr = new Float32Array(1024);
+               var outi = new Float32Array(1024);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.91);
+           });
+
+        it("Inverse CFFT length 2048",
+           function () {
+               var test = generateComplexTestSignal(2048, "rampComplex");
+               var outr = new Float32Array(2048);
+               var outi = new Float32Array(2048);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(148.22);
+           });
+
+        it("Inverse CFFT length 4096",
+           function () {
+               var test = generateComplexTestSignal(4096, "rampComplex");
+               var outr = new Float32Array(4096);
+               var outi = new Float32Array(4096);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.05);
+           });
+
+        it("Inverse CFFT length 8192",
+           function () {
+               var test = generateComplexTestSignal(8192, "rampComplex");
+               var outr = new Float32Array(8192);
+               var outi = new Float32Array(8192);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(146.29);
+           });
+
+        it("Inverse CFFT length 16384",
+           function () {
+               var test = generateComplexTestSignal(16384, "rampComplex");
+               var outr = new Float32Array(16384);
+               var outi = new Float32Array(16384);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(145.53);
+           });
+
+        it("Inverse CFFT length 32768",
+           function () {
+               var test = generateComplexTestSignal(32768, "rampComplex");
+               var outr = new Float32Array(32768);
+               var outi = new Float32Array(32768);
+               ifft(test.expected[0], test.expected[1], outr, outi);
+               ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(145.89);
            });
 
     });
