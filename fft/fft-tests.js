@@ -6,8 +6,8 @@ describe(
                var test = generateComplexTestSignal(4, "rampComplex");
                var outr = new Float32Array(4);
                var outi = new Float32Array(4);
-               fftInitialize(2);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(2);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(323.56);
@@ -18,8 +18,8 @@ describe(
                var test = generateComplexTestSignal(8, "rampComplex");
                var outr = new Float32Array(8);
                var outi = new Float32Array(8);
-               fftInitialize(3);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(3);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(330.55);
@@ -30,8 +30,8 @@ describe(
                var test = generateComplexTestSignal(16, "rampComplex");
                var outr = new Float32Array(16);
                var outi = new Float32Array(16);
-               fftInitialize(4);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(4);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(155.21);
@@ -42,8 +42,8 @@ describe(
                var test = generateComplexTestSignal(32, "rampComplex");
                var outr = new Float32Array(32);
                var outi = new Float32Array(32);
-               fftInitialize(5);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(5);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(153.59);
@@ -54,8 +54,8 @@ describe(
                var test = generateComplexTestSignal(64, "rampComplex");
                var outr = new Float32Array(64);
                var outi = new Float32Array(64);
-               fftInitialize(6);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(6);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(147.87);
@@ -66,8 +66,8 @@ describe(
                var test = generateComplexTestSignal(128, "rampComplex");
                var outr = new Float32Array(128);
                var outi = new Float32Array(128);
-               fftInitialize(7);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(7);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(152.51);
@@ -78,8 +78,8 @@ describe(
                var test = generateComplexTestSignal(256, "rampComplex");
                var outr = new Float32Array(256);
                var outi = new Float32Array(256);
-               fftInitialize(8);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(8);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(147.77);
@@ -90,8 +90,8 @@ describe(
                var test = generateComplexTestSignal(512, "rampComplex");
                var outr = new Float32Array(512);
                var outi = new Float32Array(512);
-               fftInitialize(9);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(9);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(147.05);
@@ -102,8 +102,8 @@ describe(
                var test = generateComplexTestSignal(1024, "rampComplex");
                var outr = new Float32Array(1024);
                var outi = new Float32Array(1024);
-               fftInitialize(10);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(10);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(147.05);
@@ -114,8 +114,8 @@ describe(
                var test = generateComplexTestSignal(2048, "rampComplex");
                var outr = new Float32Array(2048);
                var outi = new Float32Array(2048);
-               fftInitialize(11);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(11);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(147.007);
@@ -126,8 +126,8 @@ describe(
                var test = generateComplexTestSignal(4096, "rampComplex");
                var outr = new Float32Array(4096);
                var outi = new Float32Array(4096);
-               fftInitialize(12);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(12);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(152.72);
@@ -138,8 +138,8 @@ describe(
                var test = generateComplexTestSignal(8192, "rampComplex");
                var outr = new Float32Array(8192);
                var outi = new Float32Array(8192);
-               fftInitialize(13);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(13);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(146.996);
@@ -150,8 +150,8 @@ describe(
                var test = generateComplexTestSignal(16384, "rampComplex");
                var outr = new Float32Array(16384);
                var outi = new Float32Array(16384);
-               fftInitialize(14);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(14);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(146.947);
@@ -162,13 +162,12 @@ describe(
                var test = generateComplexTestSignal(32768, "rampComplex");
                var outr = new Float32Array(32768);
                var outi = new Float32Array(32768);
-               fftInitialize(15);
-               fft(test.signal[0], test.signal[1], outr, outi);
+               var fft = new FFT(15);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(146.94);
            });
-
     });
 
 describe(
@@ -179,9 +178,9 @@ describe(
                var test = generateComplexTestSignal(4, "rampComplex");
                var outr = new Float32Array(4);
                var outi = new Float32Array(4);
-               fftInitialize(2);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(2);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(500);
@@ -192,9 +191,9 @@ describe(
                var test = generateComplexTestSignal(8, "rampComplex");
                var outr = new Float32Array(8);
                var outi = new Float32Array(8);
-               fftInitialize(3);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(3);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(159.93);
@@ -205,9 +204,9 @@ describe(
                var test = generateComplexTestSignal(16, "rampComplex");
                var outr = new Float32Array(16);
                var outi = new Float32Array(16);
-               fftInitialize(4);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(4);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(152.20);
@@ -218,9 +217,9 @@ describe(
                var test = generateComplexTestSignal(32, "rampComplex");
                var outr = new Float32Array(32);
                var outi = new Float32Array(32);
-               fftInitialize(5);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(5);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(150.83);
@@ -231,9 +230,9 @@ describe(
                var test = generateComplexTestSignal(64, "rampComplex");
                var outr = new Float32Array(64);
                var outi = new Float32Array(64);
-               fftInitialize(6);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(6);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(147.08);
@@ -244,9 +243,9 @@ describe(
                var test = generateComplexTestSignal(128, "rampComplex");
                var outr = new Float32Array(128);
                var outi = new Float32Array(128);
-               fftInitialize(7);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(7);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(148.53);
@@ -257,9 +256,9 @@ describe(
                var test = generateComplexTestSignal(256, "rampComplex");
                var outr = new Float32Array(256);
                var outi = new Float32Array(256);
-               fftInitialize(8);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(8);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(145.81);
@@ -270,9 +269,9 @@ describe(
                var test = generateComplexTestSignal(512, "rampComplex");
                var outr = new Float32Array(512);
                var outi = new Float32Array(512);
-               fftInitialize(9);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(9);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(145.54);
@@ -283,9 +282,9 @@ describe(
                var test = generateComplexTestSignal(1024, "rampComplex");
                var outr = new Float32Array(1024);
                var outi = new Float32Array(1024);
-               fftInitialize(10);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(10);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(145.98);
@@ -296,9 +295,9 @@ describe(
                var test = generateComplexTestSignal(2048, "rampComplex");
                var outr = new Float32Array(2048);
                var outi = new Float32Array(2048);
-               fftInitialize(11);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(11);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(145.99);
@@ -309,9 +308,9 @@ describe(
                var test = generateComplexTestSignal(4096, "rampComplex");
                var outr = new Float32Array(4096);
                var outi = new Float32Array(4096);
-               fftInitialize(12);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(12);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(144.62);
@@ -322,9 +321,9 @@ describe(
                var test = generateComplexTestSignal(8192, "rampComplex");
                var outr = new Float32Array(8192);
                var outi = new Float32Array(8192);
-               fftInitialize(13);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(13);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(144.59);
@@ -335,9 +334,9 @@ describe(
                var test = generateComplexTestSignal(16384, "rampComplex");
                var outr = new Float32Array(16384);
                var outi = new Float32Array(16384);
-               fftInitialize(14);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(14);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(144.00);
@@ -348,12 +347,11 @@ describe(
                var test = generateComplexTestSignal(32768, "rampComplex");
                var outr = new Float32Array(32768);
                var outi = new Float32Array(32768);
-               fftInitialize(15);
-               ifft(test.expected[0], test.expected[1], outr, outi);
-               ifftScale(outr, outi);
+               var fft = new FFT(15);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(143.52);
            });
-
     });

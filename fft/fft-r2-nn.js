@@ -1,43 +1,63 @@
-var n;
-var halfN;
-var pairsInGroup;
-var numberOfGroups;
-var distance;
-var notSwitchInput;
-var twiddleCos;
-var twiddleSin;
-var debug = 0;
+// Create an FFT object of order |order|.  This will
+// compute forward and inverse FFTs of length 2^|order|.
+function FFT(order)
+{
+    this.order = order;
+    this.N = 1 << order;
+    this.halfN = 1 << (order - 1);
+
+    // Internal variables needed for computing each stage of the FFT.
+    this.pairsInGroup = 0;
+    this.numberOfGroups = 0;
+    this.distance = 0;
+    this.notSwitchInput = 0;
+
+    // Work arrays
+    this.aReal = new Float32Array(this.N);
+    this.aImag = new Float32Array(this.N);
+    this.debug = 0;
+
+    // Twiddle tables for the FFT.
+    this.twiddleCos = new Float32Array(this.N);
+    this.twiddleSin = new Float32Array(this.N);
+
+    var omega = -2 * Math.PI / this.N;
+    for (var k = 0; k < this.N; ++k) {
+        this.twiddleCos[k] = Math.fround(Math.cos(omega * k));
+        this.twiddleSin[k] = Math.fround(Math.sin(omega * k));
+    }
+}
 
 // Core routine that does one stage of the FFT, implementing all of
 // the butterflies for that stage.
-function FFTRadix2Core (aReal, aImag, bReal, bImag)
+FFT.prototype.FFTRadix2Core = function (aReal, aImag, bReal, bImag)
 {
     var index = 0;
-    for (var k = 0; k < numberOfGroups; ++k) {
-        var jfirst = 2 * k * pairsInGroup;
-        var jlast = jfirst + pairsInGroup - 1;
-        var jtwiddle = k * pairsInGroup;
-        var wr = twiddleCos[jtwiddle];
-        var wi = twiddleSin[jtwiddle];
+    for (var k = 0; k < this.numberOfGroups; ++k) {
+        var jfirst = 2 * k * this.pairsInGroup;
+        var jlast = jfirst + this.pairsInGroup - 1;
+        var jtwiddle = k * this.pairsInGroup;
+        var wr = this.twiddleCos[jtwiddle];
+        var wi = this.twiddleSin[jtwiddle];
 
         for (var j = jfirst; j <= jlast; ++j) {
             // temp = w * a[j + distance]
-            var idx = j + distance;
+            var idx = j + this.distance;
             var tr = wr * aReal[idx] - wi * aImag[idx];
             var ti = wr * aImag[idx] + wi * aReal[idx];
 
-            if (debug > 0) {
+            if (this.debug > 0) {
                 console.log("k = " + k
                             + ", jfirst/jlast = " + jfirst + " " + jlast
                             + ", jtwiddle = " + jtwiddle
-                            + ", dist = " + distance
+                            + ", dist = " + this.distance
                             + ", index = " + index
                             + ", w = " + wr + ", " + wi);
             }
             bReal[index] = aReal[j] + tr;
             bImag[index] = aImag[j] + ti;
-            bReal[index + halfN] = aReal[j] - tr;
-            bImag[index + halfN] = aImag[j] - ti;
+            bReal[index + this.halfN] = aReal[j] - tr;
+            bImag[index + this.halfN] = aImag[j] - ti;
             ++index;
         }
     }
@@ -55,106 +75,84 @@ function FFTRadix2Core (aReal, aImag, bReal, bImag)
 //
 //   x = |xr| + i*|xi|
 //   b = |bReal| + i*|bImag|
-function fft (xr, xi, bReal, bImag)
+FFT.prototype.fft = function (xr, xi, bReal, bImag)
 {
-    n = xr.length;
-    halfN = n >> 1;
-    pairsInGroup = halfN;
-    numberOfGroups = 1;
-    distance = halfN;
-    notSwitchInput = true;
-
-    var aReal = new Float32Array(n);
-    var aImag = new Float32Array(n);
-
-    // This depends on n being a power of 2 and Math.log2 returning an
-    // exact integer!
-    var logn = Math.floor(Math.log2(n));
+    this.pairsInGroup = this.halfN;
+    this.numberOfGroups = 1;
+    this.distance = this.halfN;
+    this.notSwitchInput = true;
 
     // Arrange it so that the last iteration puts the desired output
     // in bReal/bImag.
-    if (logn & 1 == 1) {
-        FFTRadix2Core(xr, xi, bReal, bImag);
-        notSwitchInput = !notSwitchInput;
+    if (this.order & 1 == 1) {
+        this.FFTRadix2Core(xr, xi, bReal, bImag);
+        this.notSwitchInput = !this.notSwitchInput;
     } else {
-        FFTRadix2Core(xr, xi, aReal, aImag);
+        this.FFTRadix2Core(xr, xi, this.aReal, this.aImag);
     }
 
-    pairsInGroup >>= 1;
-    numberOfGroups <<= 1;
-    distance >>= 1;
+    this.pairsInGroup >>= 1;
+    this.numberOfGroups <<= 1;
+    this.distance >>= 1;
 
-    while (numberOfGroups < n) {
-        if (debug > 0) {
-            console.log("numberOfGroups = " + numberOfGroups);
+    while (this.numberOfGroups < this.N) {
+        if (this.debug > 0) {
+            console.log("numberOfGroups = " + this.numberOfGroups);
         }
 
-        if (notSwitchInput) {
-            FFTRadix2Core(aReal, aImag, bReal, bImag);
+        if (this.notSwitchInput) {
+            this.FFTRadix2Core(this.aReal, this.aImag, bReal, bImag);
         } else {
-            FFTRadix2Core(bReal, bImag, aReal, aImag);
+            this.FFTRadix2Core(bReal, bImag, this.aReal, this.aImag);
         }
 
-        if (debug > 0) {
+        if (this.debug > 0) {
             console.log("bReal = ");
             console.log(bReal);
             console.log("bImag = ");
             console.log(bImag);
         }
 
-        notSwitchInput = !notSwitchInput;
-        pairsInGroup >>= 1;
-        numberOfGroups <<= 1;
-        distance >>= 1;
+        this.notSwitchInput = !this.notSwitchInput;
+        this.pairsInGroup >>= 1;
+        this.numberOfGroups <<= 1;
+        this.distance >>= 1;
     }
 
     return [bReal, bImag];
 }
 
-function fftInitialize (order)
-{
-    n = 1 << order;
-    twiddleCos = new Float32Array(n);
-    twiddleSin = new Float32Array(n);
-
-    var omega = -2 * Math.PI / n;
-    for (var k = 0; k < n; ++k) {
-        twiddleCos[k] = Math.fround(Math.cos(omega * k));
-        twiddleSin[k] = Math.fround(Math.sin(omega * k));
-    }
-}
-
 // Core routine that does one stage of the FFT, implementing all of
 // the butterflies for that stage.  This is identical to
 // FFTRadix2Core, except the twiddle factor, w, is the conjugate.
-function iFFTRadix2Core (aReal, aImag, bReal, bImag)
+FFT.prototype.iFFTRadix2Core = function (aReal, aImag, bReal, bImag)
 {
     var index = 0;
-    for (var k = 0; k < numberOfGroups; ++k) {
-        var jfirst = 2 * k * pairsInGroup;
-        var jlast = jfirst + pairsInGroup - 1;
-        var jtwiddle = k * pairsInGroup;
-        var wr = twiddleCos[jtwiddle];
-        var wi = -twiddleSin[jtwiddle];
+    for (var k = 0; k < this.numberOfGroups; ++k) {
+        var jfirst = 2 * k * this.pairsInGroup;
+        var jlast = jfirst + this.pairsInGroup - 1;
+        var jtwiddle = k * this.pairsInGroup;
+        var wr = this.twiddleCos[jtwiddle];
+        var wi = -this.twiddleSin[jtwiddle];
 
         for (var j = jfirst; j <= jlast; ++j) {
             // temp = w * a[j + distance]
-            var idx = j + distance;
+            var idx = j + this.distance;
             var tr = wr * aReal[idx] - wi * aImag[idx];
             var ti = wr * aImag[idx] + wi * aReal[idx];
 
-            if (debug > 0) {
+            if (this.debug > 0) {
                 console.log("k = " + k
                             + ", jfirst/jlast = " + jfirst + " " + jlast
                             + ", jtwiddle = " + jtwiddle
-                            + ", dist = " + distance
+                            + ", dist = " + this.distance
                             + ", index = " + index
                             + ", w = " + wr + ", " + wi);
             }
             bReal[index] = aReal[j] + tr;
             bImag[index] = aImag[j] + ti;
-            bReal[index + halfN] = aReal[j] - tr;
-            bImag[index + halfN] = aImag[j] - ti;
+            bReal[index + this.halfN] = aReal[j] - tr;
+            bImag[index + this.halfN] = aImag[j] - ti;
             ++index;
         }
     }
@@ -175,57 +173,48 @@ function iFFTRadix2Core (aReal, aImag, bReal, bImag)
 //
 // Note that ifft(fft(x)) = N * x.  To get x, call ifftScale to scale
 // the output of the ifft appropriately.
-function ifft (xr, xi, bReal, bImag)
+FFT.prototype.ifft = function (xr, xi, bReal, bImag)
 {
-    n = xr.length;
-    halfN = n >> 1;
-    pairsInGroup = halfN;
-    numberOfGroups = 1;
-    distance = halfN;
-    notSwitchInput = true;
-
-    var aReal = new Float32Array(n);
-    var aImag = new Float32Array(n);
-
-    // This depends on n being a power of 2 and Math.log2 returning an
-    // exact integer!
-    var logn = Math.floor(Math.log2(n));
+    this.pairsInGroup = this.halfN;
+    this.numberOfGroups = 1;
+    this.distance = this.halfN;
+    this.notSwitchInput = true;
 
     // Arrange it so that the last iteration puts the desired output
     // in bReal/bImag.
-    if (logn & 1 == 1) {
-        iFFTRadix2Core(xr, xi, bReal, bImag);
-        notSwitchInput = !notSwitchInput;
+    if (this.order & 1 == 1) {
+        this.iFFTRadix2Core(xr, xi, bReal, bImag);
+        this.notSwitchInput = !this.notSwitchInput;
     } else {
-        iFFTRadix2Core(xr, xi, aReal, aImag);
+        this.iFFTRadix2Core(xr, xi, this.aReal, this.aImag);
     }
 
-    pairsInGroup >>= 1;
-    numberOfGroups <<= 1;
-    distance >>= 1;
+    this.pairsInGroup >>= 1;
+    this.numberOfGroups <<= 1;
+    this.distance >>= 1;
 
-    while (numberOfGroups < n) {
-        if (debug > 0) {
-            console.log("numberOfGroups = " + numberOfGroups);
+    while (this.numberOfGroups < this.N) {
+        if (this.debug > 0) {
+            console.log("numberOfGroups = " + this.numberOfGroups);
         }
 
-        if (notSwitchInput) {
-            iFFTRadix2Core(aReal, aImag, bReal, bImag);
+        if (this.notSwitchInput) {
+            this.iFFTRadix2Core(this.aReal, this.aImag, bReal, bImag);
         } else {
-            iFFTRadix2Core(bReal, bImag, aReal, aImag);
+            this.iFFTRadix2Core(bReal, bImag, this.aReal, this.aImag);
         }
 
-        if (debug > 0) {
+        if (this.debug > 0) {
             console.log("bReal = ");
             console.log(bReal);
             console.log("bImag = ");
             console.log(bImag);
         }
 
-        notSwitchInput = !notSwitchInput;
-        pairsInGroup >>= 1;
-        numberOfGroups <<= 1;
-        distance >>= 1;
+        this.notSwitchInput = !this.notSwitchInput;
+        this.pairsInGroup >>= 1;
+        this.numberOfGroups <<= 1;
+        this.distance >>= 1;
     }
 
     return [bReal, bImag];
@@ -233,11 +222,10 @@ function ifft (xr, xi, bReal, bImag)
 
 //
 // Scales the IFFT by 1/N, done in place.
-function ifftScale(xr, xi)
+FFT.prototype.ifftScale = function (xr, xi)
 {
-    var n = xr.length;
-    var factor = 1 / n;
-    for (var k = 0; k < n; ++k) {
+    var factor = 1 / this.N;
+    for (var k = 0; k < this.N; ++k) {
         xr[k] *= factor;
         xi[k] *= factor;
     }
