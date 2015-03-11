@@ -249,3 +249,92 @@ FFT.prototype.ifftScale = function (xr, xi)
         xi[k] *= factor;
     }
 }
+
+// First stage for the RFFT.  Basically the same as FFTRadix2Core, but
+// we assume aImag is 0, and adjust the code accordingly.
+FFT.prototype.RFFTRadix2CoreStage1 = function (aReal, bReal, bImag)
+{
+    var index = 0;
+    for (var k = 0; k < this.numberOfGroups; ++k) {
+        var jfirst = 2 * k * this.pairsInGroup;
+        var jlast = jfirst + this.pairsInGroup - 1;
+        var jtwiddle = k * this.pairsInGroup;
+        var wr = this.twiddleCos[jtwiddle];
+        var wi = this.twiddleSin[jtwiddle];
+
+        for (var j = jfirst; j <= jlast; ++j) {
+            // temp = w * a[j + distance]
+            var idx = j + this.distance;
+            var tr = wr * aReal[idx];
+            var ti = wi * aReal[idx];
+
+/*
+            if (this.debug > 0) {
+                console.log("k = " + k
+                            + ", jfirst/jlast = " + jfirst + " " + jlast
+                            + ", jtwiddle = " + jtwiddle
+                            + ", dist = " + this.distance
+                            + ", index = " + index
+                            + ", w = " + wr + ", " + wi);
+            }
+*/
+            bReal[index] = aReal[j] + tr;
+            bImag[index] = ti;
+            bReal[index + this.halfN] = aReal[j] - tr;
+            bImag[index + this.halfN] = -ti;
+            ++index;
+        }
+    }
+}    
+
+// Forward Real FFT.  Like fft, but the signal is assumed to be real,
+// so the imaginary part is not supplied.  The output, however, is
+// still the same and is returned in two arrays.  (This could be
+// optimized to use less storage, both internally and for the output,
+// but we don't do that.)
+FFT.prototype.rfft = function (xr, bReal, bImag)
+{
+    this.pairsInGroup = this.halfN;
+    this.numberOfGroups = 1;
+    this.distance = this.halfN;
+    this.notSwitchInput = true;
+
+    // Arrange it so that the last iteration puts the desired output
+    // in bReal/bImag.
+    if (this.order & 1 == 1) {
+        this.RFFTRadix2CoreStage1(xr, bReal, bImag);
+        this.notSwitchInput = !this.notSwitchInput;
+    } else {
+        this.RFFTRadix2CoreStage1(xr, this.aReal, this.aImag);
+    }
+
+    this.pairsInGroup >>= 1;
+    this.numberOfGroups <<= 1;
+    this.distance >>= 1;
+
+    while (this.numberOfGroups < this.N) {
+/*
+        if (this.debug > 0) {
+            console.log("numberOfGroups = " + this.numberOfGroups);
+        }
+*/
+        if (this.notSwitchInput) {
+            this.FFTRadix2Core(this.aReal, this.aImag, bReal, bImag);
+        } else {
+            this.FFTRadix2Core(bReal, bImag, this.aReal, this.aImag);
+        }
+
+/*
+        if (this.debug > 0) {
+            console.log("bReal = ");
+            console.log(bReal);
+            console.log("bImag = ");
+            console.log(bImag);
+        }
+*/
+        this.notSwitchInput = !this.notSwitchInput;
+        this.pairsInGroup >>= 1;
+        this.numberOfGroups <<= 1;
+        this.distance >>= 1;
+    }
+}

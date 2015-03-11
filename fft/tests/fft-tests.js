@@ -405,6 +405,101 @@ describe(
     });
 
 describe(
+    "Test forward RFFT",
+    function () {
+        it("RFFT length 4",
+           function () {
+               var fft = new FFT(2);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(335.72);
+           });
+        it("RFFT length 8",
+           function () {
+               var fft = new FFT(3);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(165.95);
+           });
+        it("RFFT length 16",
+           function () {
+               var fft = new FFT(4);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(161.90);
+           });
+        it("RFFT length 32",
+           function () {
+               var fft = new FFT(5);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(157.32);
+           });
+        it("RFFT length 64",
+           function () {
+               var fft = new FFT(6);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.87);
+           });
+        it("RFFT length 128",
+           function () {
+               var fft = new FFT(7);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.90);
+           });
+        it("RFFT length 256",
+           function () {
+               var fft = new FFT(8);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.55);
+           });
+/*
+        it("RFFT length 32",
+           function () {
+               var fft = new FFT(5);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(5000);
+           });
+*/
+    });
+
+describe(
     "Test exceptions",
     function () {
         it("Invalid FFT order 1",
