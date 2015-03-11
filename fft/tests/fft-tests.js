@@ -168,6 +168,28 @@ describe(
                                outr, outi);
                expect(snr).toBeGreaterThan(146.94);
            });
+        it("CFFT length 65536",
+           function () {
+               var test = generateComplexTestSignal(65536, "rampComplex");
+               var outr = new Float32Array(65536);
+               var outi = new Float32Array(65536);
+               var fft = new FFT(16);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.49);
+           });
+        it("CFFT length 131072",
+           function () {
+               var fft = new FFT(17);
+               var test = generateComplexTestSignal(fft.N, "rampComplex");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.fft(test.signal[0], test.signal[1], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.68);
+           });
     });
 
 describe(
@@ -353,6 +375,32 @@ describe(
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(143.52);
+           });
+
+        it("Inverse CFFT length 65536",
+           function () {
+               var fft = new FFT(16);
+               var test = generateComplexTestSignal(fft.N, "rampComplex");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(143.35);
+           });
+
+        it("Inverse CFFT length 131072",
+           function () {
+               var fft = new FFT(17);
+               var test = generateComplexTestSignal(fft.N, "rampComplex");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.ifft(test.expected[0], test.expected[1], outr, outi);
+               fft.ifftScale(outr, outi);
+               var snr = snrdB(test.signal[0], test.signal[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(143.05);
            });
     });
 
