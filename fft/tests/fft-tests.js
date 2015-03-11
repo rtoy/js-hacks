@@ -106,7 +106,7 @@ describe(
                fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
-               expect(snr).toBeGreaterThan(147.05);
+               expect(snr).toBeGreaterThan(151.10);
            });
 
         it("CFFT length 2048",
@@ -118,7 +118,7 @@ describe(
                fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
-               expect(snr).toBeGreaterThan(147.007);
+               expect(snr).toBeGreaterThan(152.60);
            });
 
         it("CFFT length 4096",
@@ -142,7 +142,7 @@ describe(
                fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
-               expect(snr).toBeGreaterThan(146.996);
+               expect(snr).toBeGreaterThan(150.98);
            });
 
         it("CFFT length 16384",
@@ -154,7 +154,7 @@ describe(
                fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
-               expect(snr).toBeGreaterThan(146.947);
+               expect(snr).toBeGreaterThan(150.44);
            });
 
         it("CFFT length 32768",
@@ -166,7 +166,7 @@ describe(
                fft.fft(test.signal[0], test.signal[1], outr, outi);
                var snr = snrdB(test.expected[0], test.expected[1],
                                outr, outi);
-               expect(snr).toBeGreaterThan(146.94);
+               expect(snr).toBeGreaterThan(150.28);
            });
         it("CFFT length 65536",
            function () {
@@ -205,7 +205,7 @@ describe(
                fft.ifftScale(outr, outi);
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
-               expect(snr).toBeGreaterThan(500);
+               expect(snr).toBeGreaterThan(999);
            });
 
         it("Inverse CFFT length 8",
