@@ -122,8 +122,6 @@ FFT.prototype.fft = function (xr, xi, bReal, bImag)
         this.numberOfGroups <<= 1;
         this.distance >>= 1;
     }
-
-    return [bReal, bImag];
 }
 
 // Core routine that does one stage of the FFT, implementing all of
@@ -226,8 +224,6 @@ FFT.prototype.ifft = function (xr, xi, bReal, bImag)
         this.numberOfGroups <<= 1;
         this.distance >>= 1;
     }
-
-    return [bReal, bImag];
 }
 
 //
