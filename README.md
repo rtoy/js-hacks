@@ -57,5 +57,6 @@ The inputs and outputs should be Float32Array's.  Currently there is
 no limit on the order, but internally the twiddle table only stores
 single-precision values, so the output only has single-precision
 accuracy.  This also limit the maximum usable FFT size.  It's probably
-best not to exceed order 15 (32768 points).
+best not to exceed order 15 (32768 points).  No checks are made that
+the arrays have the correct length and type.
 
