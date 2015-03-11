@@ -46,6 +46,7 @@ FFT.prototype.FFTRadix2Core = function (aReal, aImag, bReal, bImag)
             var tr = wr * aReal[idx] - wi * aImag[idx];
             var ti = wr * aImag[idx] + wi * aReal[idx];
 
+/*
             if (this.debug > 0) {
                 console.log("k = " + k
                             + ", jfirst/jlast = " + jfirst + " " + jlast
@@ -54,6 +55,7 @@ FFT.prototype.FFTRadix2Core = function (aReal, aImag, bReal, bImag)
                             + ", index = " + index
                             + ", w = " + wr + ", " + wi);
             }
+*/
             bReal[index] = aReal[j] + tr;
             bImag[index] = aImag[j] + ti;
             bReal[index + this.halfN] = aReal[j] - tr;
@@ -96,23 +98,25 @@ FFT.prototype.fft = function (xr, xi, bReal, bImag)
     this.distance >>= 1;
 
     while (this.numberOfGroups < this.N) {
+/*
         if (this.debug > 0) {
             console.log("numberOfGroups = " + this.numberOfGroups);
         }
-
+*/
         if (this.notSwitchInput) {
             this.FFTRadix2Core(this.aReal, this.aImag, bReal, bImag);
         } else {
             this.FFTRadix2Core(bReal, bImag, this.aReal, this.aImag);
         }
 
+/*
         if (this.debug > 0) {
             console.log("bReal = ");
             console.log(bReal);
             console.log("bImag = ");
             console.log(bImag);
         }
-
+*/
         this.notSwitchInput = !this.notSwitchInput;
         this.pairsInGroup >>= 1;
         this.numberOfGroups <<= 1;
@@ -141,6 +145,7 @@ FFT.prototype.iFFTRadix2Core = function (aReal, aImag, bReal, bImag)
             var tr = wr * aReal[idx] - wi * aImag[idx];
             var ti = wr * aImag[idx] + wi * aReal[idx];
 
+/*
             if (this.debug > 0) {
                 console.log("k = " + k
                             + ", jfirst/jlast = " + jfirst + " " + jlast
@@ -149,6 +154,7 @@ FFT.prototype.iFFTRadix2Core = function (aReal, aImag, bReal, bImag)
                             + ", index = " + index
                             + ", w = " + wr + ", " + wi);
             }
+*/
             bReal[index] = aReal[j] + tr;
             bImag[index] = aImag[j] + ti;
             bReal[index + this.halfN] = aReal[j] - tr;
@@ -194,9 +200,11 @@ FFT.prototype.ifft = function (xr, xi, bReal, bImag)
     this.distance >>= 1;
 
     while (this.numberOfGroups < this.N) {
+/*
         if (this.debug > 0) {
             console.log("numberOfGroups = " + this.numberOfGroups);
         }
+*/
 
         if (this.notSwitchInput) {
             this.iFFTRadix2Core(this.aReal, this.aImag, bReal, bImag);
@@ -204,12 +212,14 @@ FFT.prototype.ifft = function (xr, xi, bReal, bImag)
             this.iFFTRadix2Core(bReal, bImag, this.aReal, this.aImag);
         }
 
+/*
         if (this.debug > 0) {
             console.log("bReal = ");
             console.log(bReal);
             console.log("bImag = ");
             console.log(bImag);
         }
+*/
 
         this.notSwitchInput = !this.notSwitchInput;
         this.pairsInGroup >>= 1;
