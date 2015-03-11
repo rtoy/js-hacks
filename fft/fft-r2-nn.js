@@ -2,6 +2,10 @@
 // compute forward and inverse FFTs of length 2^|order|.
 function FFT(order)
 {
+    if (order <= 1) {
+        throw new this.FFTException(order);
+    }
+
     this.order = order;
     this.N = 1 << order;
     this.halfN = 1 << (order - 1);
@@ -26,6 +30,15 @@ function FFT(order)
         this.twiddleCos[k] = Math.fround(Math.cos(omega * k));
         this.twiddleSin[k] = Math.fround(Math.sin(omega * k));
     }
+}
+
+FFT.prototype.FFTException = function (order)
+{
+    this.value = order;
+    this.message = "Order must be greater than 1: ";
+    this.toString = function () {
+        return this.message + this.value;
+    };
 }
 
 // Core routine that does one stage of the FFT, implementing all of

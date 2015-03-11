@@ -355,3 +355,13 @@ describe(
                expect(snr).toBeGreaterThan(143.52);
            });
     });
+
+describe(
+    "Test exceptions",
+    function () {
+        it("Invalid FFT order 1",
+           function () {
+               expect(function () { new FFT(1); })
+                   .toThrow();
+           });
+    });
