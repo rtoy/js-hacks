@@ -1,5 +1,5 @@
 describe(
-    "Test Complex FFTs lengths with complex Ramp",
+    "Test Complex FFTs with complex Ramp",
     function () {
         it("CFFT length 4",
            function () {
@@ -193,7 +193,7 @@ describe(
     });
 
 describe(
-    "Test Inverse Complex FFTs lengths with complex Ramp",
+    "Test Inverse Complex FFTs with complex Ramp",
     function () {
         it("Inverse CFFT length 4",
            function () {
@@ -401,6 +401,187 @@ describe(
                var snr = snrdB(test.signal[0], test.signal[1],
                                outr, outi);
                expect(snr).toBeGreaterThan(143.05);
+           });
+    });
+
+describe(
+    "Test forward RFFT",
+    function () {
+        it("RFFT length 4",
+           function () {
+               var fft = new FFT(2);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(335.72);
+           });
+        it("RFFT length 8",
+           function () {
+               var fft = new FFT(3);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(165.95);
+           });
+        it("RFFT length 16",
+           function () {
+               var fft = new FFT(4);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(161.90);
+           });
+        it("RFFT length 32",
+           function () {
+               var fft = new FFT(5);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(157.32);
+           });
+        it("RFFT length 64",
+           function () {
+               var fft = new FFT(6);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.87);
+           });
+        it("RFFT length 128",
+           function () {
+               var fft = new FFT(7);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.90);
+           });
+        it("RFFT length 256",
+           function () {
+               var fft = new FFT(8);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(147.55);
+           });
+        it("RFFT length 512",
+           function () {
+               var fft = new FFT(9);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(146.86);
+           });
+        it("RFFT length 1024",
+           function () {
+               var fft = new FFT(10);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(150.60);
+           });
+        it("RFFT length 2048",
+           function () {
+               var fft = new FFT(11);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(152.21);
+           });
+        it("RFFT length 4096",
+           function () {
+               var fft = new FFT(12);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(152.76);
+           });
+        it("RFFT length 8192",
+           function () {
+               var fft = new FFT(13);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.12);
+           });
+        it("RFFT length 16384",
+           function () {
+               var fft = new FFT(14);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(150.61);
+           });
+        it("RFFT length 32768",
+           function () {
+               var fft = new FFT(15);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(150.42);
+           });
+        it("RFFT length 65536",
+           function () {
+               var fft = new FFT(16);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.71);
+           });
+        it("RFFT length 131072",
+           function () {
+               var fft = new FFT(17);
+               var test = generateComplexTestSignal(fft.N, "rampReal");
+               var outr = new Float32Array(fft.N);
+               var outi = new Float32Array(fft.N);
+               fft.rfft(test.signal[0], outr, outi);
+               var snr = snrdB(test.expected[0], test.expected[1],
+                               outr, outi);
+               expect(snr).toBeGreaterThan(151.85);
            });
     });
 
